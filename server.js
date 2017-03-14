@@ -18,20 +18,22 @@ var server = http.createServer(function(req, res) {
   
   var retObj = { "unix": null, "natural": null };
   
-  if (isNaN(path)) { // if NaN, then try human readable date.
-    var time = new Date(decodeURI(path));
-    console.log("time=" + time.getTime());
-    if (!isNaN(time.getTime())) {   
-      retObj.natural = decodeURI(path);
-      retObj.unix = time.getTime();
+  if (path !== "") {
+    if (isNaN(path)) { // if NaN, then try human readable date.
+      var time = new Date(decodeURI(path));
+      console.log("time=" + time.getTime());
+      if (!isNaN(time.getTime())) {   
+        retObj.natural = decodeURI(path);
+        retObj.unix = time.getTime();
+      }
     }
-  }
-  else { // is a number, so try unix timestamp
-    var time = new Date(path*1000);  // times 1000 for unix timestamp
-    console.log("time=" + time);
-    if (!isNaN(time.getTime())) {
-      retObj.unix = time.getTime();
-      retObj.natural = getNatural(time);
+    else { // is a number, so try unix timestamp
+      var time = new Date(path*1000);  // times 1000 for unix timestamp
+      console.log("time=" + time);
+      if (!isNaN(time.getTime())) {
+        retObj.unix = time.getTime();
+        retObj.natural = getNatural(time);
+      }
     }
   }
     
